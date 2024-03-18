@@ -15,12 +15,8 @@ provider "azurerm" {
     
 }
 
-
-
-
-
 resource "azurerm_resource_group" "caprg" {
-  name     = "capstone-rg"
+  name     = "Emmanuel_CAPSTONE_PROJECT-RG"
   location = "West Europe"
 }
 
@@ -73,4 +69,21 @@ resource "azurerm_mssql_database" "cap-db" {
   read_scale     = true
   sku_name       = "P1"
   depends_on = [ azurerm_mssql_server.capsql1624 ]
+}
+resource "azurerm_storage_account" "capstore1824" {
+  name                     = "capstone031824"
+  resource_group_name      = azurerm_resource_group.caprg.name
+  location                 = azurerm_resource_group.caprg.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+
+  tags = {
+    environment = "staging"
+  }
+
+}
+resource "azurerm_storage_container" "capstone2024" {
+  name                  = "capcontent"
+  storage_account_name  = azurerm_storage_account.capstore1824.name
+  container_access_type = "private"
 }
